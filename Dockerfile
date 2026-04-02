@@ -5,8 +5,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ ./app/
-COPY scripts/ ./scripts/
+COPY main.py ./app/main.py
+COPY schema.sql ./app/schema.sql
+COPY import_data.py ./scripts/import_data.py
 
 EXPOSE 8000
 
