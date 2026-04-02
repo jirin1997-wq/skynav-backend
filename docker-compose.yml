@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_USER: skynav
+      POSTGRES_PASSWORD: skynav
+      POSTGRES_DB: skynav
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./app/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://skynav:skynav@db/skynav
+    depends_on:
+      - db
+    volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+
+volumes:
+  pgdata:
